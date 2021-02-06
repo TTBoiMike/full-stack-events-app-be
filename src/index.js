@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const {v4: uuidv4} = require('uuid');
+const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 
 // import schema
@@ -34,7 +35,7 @@ app.post('/signup', async (req, res) => {
 })
 
 //signin existing user
-app.post('/auth', async (req, res, next) => {
+app.post('/auth', async (req, res) => {
     const user = await User.findOne({username: req.body.username})
     if(!user) {
         return res.sendStatus(401)
@@ -59,8 +60,26 @@ app.post('/', async (req, res) => {
         res.sendStatus(500)
     }
 })
-
-
+// CRUD - return all events in db
+app.get('/', async (req, res) => {
+    try {
+        const events = await Event.find()
+        res.send(events)
+    }
+    catch {
+        res.sendStatus(500)
+    }
+})
+// CRUD - delete event in db by id
+app.delete('/:id', async (req, res) => {
+    try {
+        await Event.deleteOne( { _id: ObjectId(req.params.id) } )
+        res.sendStatus(200)
+    }
+    catch {
+        res.sendStatus(500)
+    }
+})
 
 // starting express server
 app.listen(3001, () => {
