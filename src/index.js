@@ -47,9 +47,6 @@ app.post('/auth', async (req, res) => {
     await user.save()
     res.send({token: user.token})
 })
-
-
-
 // CRUD - CREATE event in db
 app.post('/', async (req, res) => {
     const newEvent = new Event(req.body)
@@ -70,6 +67,16 @@ app.get('/', async (req, res) => {
         res.sendStatus(500)
     }
 })
+// CRUD - return single event in db 
+app.get('/:id', async (req, res) => {
+    try {
+        const event = await Event.find( { _id: ObjectId(req.params.id) } )
+        res.send(event)
+    }
+    catch {
+        res.sendStatus(500)
+    }
+})
 // CRUD - delete event in db by id
 app.delete('/:id', async (req, res) => {
     try {
@@ -80,6 +87,20 @@ app.delete('/:id', async (req, res) => {
         res.sendStatus(500)
     }
 })
+// update event favourite status
+app.put('/:id', async (req, res) => {
+    console.log(req.body)
+    try {
+        await Event.findOneAndUpdate({_id: ObjectId(req.params.id)}, req.body)
+        res.sendStatus(200)
+    }
+    catch {
+        res.sendStatus(500)
+    }
+})
+
+
+
 
 // starting express server
 app.listen(3001, () => {
