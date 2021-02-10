@@ -21,7 +21,6 @@ app.use(express.json())
 // connect to events-app database
 mongoose.connect('mongodb+srv://mikethorpe:flanman6869@cluster0.cn3w3.mongodb.net/events-app', { useNewUrlParser: true, useUnifiedTopology: true } )
 
-
 //signup new user
 app.post('/signup', async (req, res) => {
     const newUser = new User({username: req.body.username, password: req.body.password})
@@ -89,7 +88,6 @@ app.delete('/:id', async (req, res) => {
 })
 // update event favourite status
 app.put('/:id', async (req, res) => {
-    console.log(req.body)
     try {
         await Event.findOneAndUpdate({_id: ObjectId(req.params.id)}, req.body)
         res.sendStatus(200)
@@ -98,9 +96,6 @@ app.put('/:id', async (req, res) => {
         res.sendStatus(500)
     }
 })
-
-
-
 
 // starting express server
 app.listen(3001, () => {
