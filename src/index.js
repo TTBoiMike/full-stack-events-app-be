@@ -44,8 +44,29 @@ app.post('/auth', async (req, res) => {
     }
     user.token = uuidv4()
     await user.save()
-    res.send({token: user.token})
+    res.send({...user, token: user.token})
 })
+// get user information
+app.get('/user/:id', async (req, res) => {
+    const {username} = await User.findOne( { _id: ObjectId(req.params.id) } )
+    try {
+        res.send({username: username})
+    }
+    catch {
+        res.sendStatus(500)
+    }
+})
+// update user information
+app.put('/user/:id', async (req, res) => {
+    try {
+        await User.findOneAndUpdate({_id: ObjectId(req.params.id)}, req.body)
+        res.status(200).send("Account Updated")
+    }
+    catch {
+        res.status(500).send("Unavailable at this time")
+    }
+})
+
 // CRUD - CREATE event in db
 app.post('/', async (req, res) => {
     const newEvent = new Event(req.body)
