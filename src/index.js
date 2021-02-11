@@ -1,4 +1,5 @@
 const express = require('express');
+const port = process.env.port || 3001
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -119,8 +120,8 @@ app.put('/:id', async (req, res) => {
 })
 
 // starting express server
-app.listen(3001, () => {
-    console.log('listening on port 3001');
+app.listen(port, () => {
+    console.log(`listening on port ${port}`);
 });
 
 // checking Mongo connection
