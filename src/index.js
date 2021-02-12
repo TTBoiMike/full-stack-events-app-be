@@ -20,12 +20,12 @@ app.use(helmet())
 app.use(express.json())
 
 // connect to events-app database
-mongoose.connect('mongodb+srv://mikethorpe:flanman6869@cluster0.cn3w3.mongodb.net/events-app', { useNewUrlParser: true, useUnifiedTopology: true } )
+mongoose.connect('mongodb+srv://mikethorpe:testtest@cluster0.cn3w3.mongodb.net/events-app', { useNewUrlParser: true, useUnifiedTopology: true } )
 
 //signup new user
 app.post('/signup', async (req, res) => {
-    const newUser = new User({username: req.body.username, password: req.body.password})
     try {
+        const newUser = new User({username: req.body.username, password: req.body.password})
         await newUser.save() 
         res.sendStatus(200)
     }
